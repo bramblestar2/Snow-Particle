@@ -1,5 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "../Gif.h"
+#include "../Snow.h"
 
 class Window
 {
@@ -21,5 +23,9 @@ private:
 
 	sf::RenderWindow* window;
 	sf::Event event;
+
+	sf::RectangleShape shape;
+	Gif gif;
+	Snow snow;
 };
 
