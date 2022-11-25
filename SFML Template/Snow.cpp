@@ -11,6 +11,7 @@ Snow::Snow(sf::Time* _Interval, const sf::Vector2f _StartVelocity, const bool _C
 	density		=	NULL;
 	min			=	NULL;
 	max			=	NULL;
+	limit		=	0;
 
 	srand(time(NULL));
 }
@@ -24,10 +25,16 @@ Snow::Snow()
 	density		=	NULL;
 	min			=	NULL;
 	max			=	NULL;
+	limit		=	0;
 }
 
 Snow::~Snow()
 {
+}
+
+void Snow::setVelocity(sf::Vector2f _Velocity)
+{
+	velocity = _Velocity;
 }
 
 void Snow::setLimit(const int _Count)
@@ -57,11 +64,47 @@ void Snow::setInterval(sf::Time* _Interval)
 	interval = _Interval;
 }
 
+void Snow::addWind(Wind _Wind)
+{
+	windyAreas.push_back(_Wind);
+}
+
+void Snow::forceMove(sf::Vector2f _Velocity)
+{
+	for (int i = 0; i < snowParticles.size(); i++)
+	{
+		snowParticles.at(i).move(_Velocity);
+	}
+}
+
 void Snow::update()
 {
 	for (int i = 0; i < snowParticles.size(); i++)
 	{
 		snowParticles.at(i).update();
+
+		for (int k = 0; k < windyAreas.size(); k++)
+		{
+			if (windyAreas.at(k).inArea(snowParticles.at(i).getPosition()))
+			{
+				//Calculate velocity depending on distance between
+				//the center position of the particles and the center
+				//positions of the wind areas
+
+				//Closer to the center is faster speed
+				//center of wind
+				sf::Vector2f windCenter;
+				windCenter.x = windyAreas.at(k).getArea().width / 2;
+
+				//center of particle
+				sf::Vector2f particleCenter = snowParticles.at(i).getPosition();
+				
+				sf::Vector2f tempVelocity;
+				
+
+				snowParticles.at(i).move(windyAreas.at(k).getVelocity());
+			}
+		}
 
 		if (snowParticles.at(i).outBounds(spawnArea))
 			snowParticles.erase(snowParticles.begin() + i);
@@ -95,7 +138,7 @@ void Snow::spawnParticle()
 			tempDensity = density;
 
 		int it = snowParticles.size();
-		snowParticles.push_back(Particle(tempDensity, constant, { 0.01, 0.1 }));
+		snowParticles.push_back(Particle(tempDensity, constant, velocity)); //0.01, 0.1
 
 		sf::Color color;
 		float brightness = 255 * (tempDensity / max);

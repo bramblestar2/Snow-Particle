@@ -9,10 +9,13 @@ public:
 	Particle();
 	~Particle();
 
+	void setPosition(sf::Vector2f _Position);
+	sf::Vector2f getPosition() const { return shape.getPosition(); }
+
 	void update();
 	void setColor(sf::Color _Color);
 	bool outBounds(const sf::Vector2f _Area);
-	void setPosition(sf::Vector2f _Position);
+	void move(sf::Vector2f _Velocity);
 
 	void render(sf::RenderWindow* window);
 private:

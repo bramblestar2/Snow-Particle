@@ -8,10 +8,11 @@ Gif::Gif(const std::string _Folder, const std::string _Format, const std::string
 	this->fileExtension =	_FileExtension;
 	this->frames		=	_FrameCount;
 	this->startFrame	=	_StartFrame;
-
 	this->currentFrame	=	_StartFrame;
 	
 	this->texture		=	new sf::Texture();
+
+	this->texture->loadFromFile(this->folder + getFrame());
 }
 
 Gif::Gif()
@@ -27,8 +28,8 @@ Gif::Gif()
 
 Gif::~Gif()
 {
-	if (texture != nullptr)
-		delete texture;
+	//if (texture != nullptr)
+	//	delete texture;
 }
 
 void Gif::setFrameTime(sf::Time* _Time)
@@ -39,6 +40,11 @@ void Gif::setFrameTime(sf::Time* _Time)
 void Gif::setCurrentFrame(const int _Frame)
 {
 	currentFrame = _Frame;
+}
+
+sf::Vector2f Gif::getSize() const
+{
+	return sf::Vector2f(texture->getSize());
 }
 
 void Gif::update(sf::RectangleShape& shape)

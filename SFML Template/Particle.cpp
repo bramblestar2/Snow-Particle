@@ -34,7 +34,7 @@ bool Particle::outBounds(const sf::Vector2f _Area)
 {
 	sf::Vector2f pos = shape.getPosition();
 
-	if (pos.x < 0 || pos.y < 0 || pos.x > _Area.x || pos.y > _Area.y)
+	if (pos.x < -100 || pos.y < -100 || pos.x > _Area.x + 100 || pos.y > _Area.y + 100)
 		return true;
 
 	return false;
@@ -43,6 +43,11 @@ bool Particle::outBounds(const sf::Vector2f _Area)
 void Particle::setPosition(sf::Vector2f _Position)
 {
 	shape.setPosition(_Position);
+}
+
+void Particle::move(sf::Vector2f _Velocity)
+{
+	shape.move(_Velocity.x * (density * 0.5), _Velocity.y * (density * 0.5));
 }
 
 void Particle::render(sf::RenderWindow* window)

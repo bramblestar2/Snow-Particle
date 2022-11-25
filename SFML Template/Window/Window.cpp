@@ -10,13 +10,24 @@ Window::Window()
 	gif.setFrameTime(&gifTime);
 
 	shape.setSize(sf::Vector2f(300,300));
+	//shape.setScale(0.5, 0.5);
+	shape.setSize(sf::Vector2f(gif.getSize().x / 2, gif.getSize().y / 2));
+	shape.setOrigin(sf::Vector2f(shape.getSize().x/2, shape.getSize().y/2));
+	shape.setPosition(window->getSize().x / 2, window->getSize().y / 2);
 
 	//Snow
-	sf::Time snowTime(sf::seconds(0.01));
+	sf::Time snowTime(sf::seconds(0.05));
 	snow = Snow(&snowTime, {1,1}, false);
 	snow.randomizeDensity(true, 2, 5);
 	snow.setSpawnArea(sf::Vector2f(window->getSize()));
-	snow.setLimit(500);
+	snow.setLimit(1000);
+	snow.setVelocity(sf::Vector2f(0, 0.3));
+
+	song.openFromFile("dancin.ogg");
+	song.play();
+	song.setLoop(true);
+
+	wind = 0;
 }
 
 Window::~Window()
@@ -37,7 +48,7 @@ void Window::run()
 
 void Window::render()
 {
-	window->clear();
+	window->clear(sf::Color(25,25,25));
 
 	window->draw(shape);
 
@@ -51,6 +62,8 @@ void Window::update()
 	gif.update(shape);
 
 	snow.update();
+
+	//snow.forceMove(sf::Vector2f(sinf(wind+=0.01)/2, 0.1));
 }
 
 void Window::updateDt()
@@ -74,6 +87,6 @@ void Window::updateSFMLEvents()
 
 void Window::initWindow()
 {
-	window = new sf::RenderWindow(sf::VideoMode(400, 400), "TITLE", sf::Style::Default);
+	window = new sf::RenderWindow(sf::VideoMode(600, 400), "TITLE", sf::Style::Default);
 	window->setFramerateLimit(60);
 }

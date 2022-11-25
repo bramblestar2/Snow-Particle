@@ -5,7 +5,6 @@
 class Gif
 {
 public:
-
 	/// <param name="_Format">> Put a # wherever the frame count will be (Ex: frame (#))</param>
 	Gif(const std::string _Folder, const std::string _Format, const std::string _FileExtension, const int _FrameCount, const int _StartFrame);
 	Gif();
@@ -14,6 +13,7 @@ public:
 	void setFrameTime(sf::Time* time);
 	void setCurrentFrame(const int _Frame);
 
+	sf::Vector2f getSize() const;
 	void update(sf::RectangleShape& shape);
 
 private:

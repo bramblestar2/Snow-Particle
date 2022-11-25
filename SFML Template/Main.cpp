@@ -3,7 +3,6 @@
 
 int main()
 {
-
     Window window;
 
     window.run();

@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "../Gif.h"
 #include "../Snow.h"
 
@@ -24,8 +25,12 @@ private:
 	sf::RenderWindow* window;
 	sf::Event event;
 
+	sf::Music song;
+
 	sf::RectangleShape shape;
 	Gif gif;
 	Snow snow;
+
+	float wind;
 };
 
