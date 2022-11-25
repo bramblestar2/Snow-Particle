@@ -63,7 +63,9 @@ void Window::update()
 
 	snow.update();
 
-	//snow.forceMove(sf::Vector2f(sinf(wind+=0.01)/2, 0.1));
+	snow.forceMove(sf::Vector2f(sinf(wind+=0.01)/2, 0.1));
+
+	song.getSampleRate();
 }
 
 void Window::updateDt()
