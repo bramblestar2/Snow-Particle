@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <memory>
 #include <SFML/Graphics.hpp>
 
 class Gif
@@ -10,18 +11,22 @@ public:
 	Gif();
 	~Gif();
 
-	void setFrameTime(sf::Time* time);
+	sf::Time getFrameTime() const;
+
+	void setFrameTime(sf::Time time);
 	void setCurrentFrame(const int _Frame);
 
 	sf::Vector2f getSize() const;
 	void update(sf::RectangleShape& shape);
 
+	Gif& operator=(const Gif& right);
+
 private:
 	int frames;
 	int currentFrame;
 	int startFrame;
-	sf::Texture* texture;
-	sf::Time* time;
+	std::unique_ptr<sf::Texture> texture;
+	sf::Time time;
 	std::string folder;
 	std::string fileExtension;
 	std::string format;

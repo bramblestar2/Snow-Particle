@@ -14,6 +14,8 @@ public:
 
 	void update();
 	void setColor(sf::Color _Color);
+	void setMinMaxGlitter(sf::Color _Min_Shimmer_Color, sf::Color _Max_Shimmer_Color);
+	void setGlitter(const bool _Glitter);
 	bool outBounds(const sf::Vector2f _Area);
 	void move(sf::Vector2f _Velocity);
 
@@ -21,10 +23,13 @@ public:
 private:
 	sf::Vector2f velocity;
 	bool constant;
+	bool glitter;
 	float density;
+	sf::Color glitterMin, glitterMax;
 
 	sf::RectangleShape shape;
 
+	sf::Color randomGlitterValue();
 	void move();
 };
 

@@ -10,8 +10,9 @@ Gif::Gif(const std::string _Folder, const std::string _Format, const std::string
 	this->startFrame	=	_StartFrame;
 	this->currentFrame	=	_StartFrame;
 	
-	this->texture		=	new sf::Texture();
-
+	//this->texture		=	new sf::Texture();
+	this->texture.reset(new sf::Texture());
+	
 	this->texture->loadFromFile(this->folder + getFrame());
 }
 
@@ -32,7 +33,12 @@ Gif::~Gif()
 	//	delete texture;
 }
 
-void Gif::setFrameTime(sf::Time* _Time)
+sf::Time Gif::getFrameTime() const
+{
+	return time;
+}
+
+void Gif::setFrameTime(sf::Time _Time)
 {
 	this->time = _Time;
 }
@@ -49,16 +55,34 @@ sf::Vector2f Gif::getSize() const
 
 void Gif::update(sf::RectangleShape& shape)
 {
-	if (this->frameClock.getElapsedTime().asSeconds() > this->time->asSeconds())
+	if (this->frameClock.getElapsedTime().asSeconds() > this->time.asSeconds())
 	{
 		this->texture->loadFromFile(this->folder + getFrame());
 
 		currentFrame = currentFrame < frames ? currentFrame + 1 : startFrame;
 
-		shape.setTexture(texture, true);
+		shape.setTexture(texture.get(), true);
+		//shape.setTexture(texture, true);
 
 		this->frameClock.restart();
 	}
+}
+
+Gif& Gif::operator=(const Gif& right)
+{
+	this->folder = right.folder;
+	this->format = right.format;
+	this->fileExtension = right.fileExtension;
+	this->frames = right.frames;
+	this->startFrame = right.startFrame;
+	this->currentFrame = right.currentFrame;
+
+	//this->texture		=	new sf::Texture();
+	this->texture.reset(new sf::Texture());
+
+	this->texture->loadFromFile(this->folder + getFrame());
+
+	return *this;
 }
 
 std::string Gif::getFrame()

@@ -26,6 +26,8 @@ private:
 	sf::Event event;
 
 	sf::Music song;
+	sf::RectangleShape songPosition;
+	sf::RectangleShape songDuration;
 
 	sf::RectangleShape shape;
 	Gif gif;

@@ -2,11 +2,12 @@
 #include <time.h>
 
 
-Snow::Snow(sf::Time* _Interval, const sf::Vector2f _StartVelocity, const bool _Constant_Velocity)
+Snow::Snow(sf::Time _Interval, const sf::Vector2f _StartVelocity, const bool _Constant_Velocity)
 {
 	interval	=	_Interval;
 	constant	=	_Constant_Velocity;
 
+	glitter		=	false;
 	randomize	=	false;
 	density		=	NULL;
 	min			=	NULL;
@@ -18,9 +19,10 @@ Snow::Snow(sf::Time* _Interval, const sf::Vector2f _StartVelocity, const bool _C
 
 Snow::Snow()
 {
-	interval	=	nullptr;
+	interval	=	sf::Time();
 	constant	=	false;
 
+	glitter		=	false;
 	randomize	=	false;
 	density		=	NULL;
 	min			=	NULL;
@@ -59,9 +61,14 @@ void Snow::randomizeDensity(const bool _Random, const float _Min, const float _M
 	max			=	_Max;
 }
 
-void Snow::setInterval(sf::Time* _Interval)
+void Snow::setInterval(sf::Time _Interval)
 {
 	interval = _Interval;
+}
+
+void Snow::setGlitter(const bool _Glitter)
+{
+	glitter = _Glitter;
 }
 
 void Snow::addWind(Wind _Wind)
@@ -110,7 +117,7 @@ void Snow::update()
 			snowParticles.erase(snowParticles.begin() + i);
 	}
 
-	if (spawnClock.getElapsedTime().asSeconds() > interval->asSeconds())
+	if (spawnClock.getElapsedTime().asSeconds() > interval.asSeconds())
 	{
 		spawnParticle();
 
@@ -148,6 +155,12 @@ void Snow::spawnParticle()
 
 		snowParticles.at(it)
 			.setPosition(sf::Vector2f(fmod(rand(), spawnArea.x), 0));
+
+		if (glitter)
+		{
+			snowParticles.at(it).setGlitter(true);
+			snowParticles.at(it).setMinMaxGlitter(sf::Color(255,255,255), sf::Color(50,50,50));
+		}
 
 		//Particle(const float _Density, const bool _Constant, const sf::Vector2f _Start_Speed);
 	}
